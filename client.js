@@ -15,6 +15,13 @@
     };
     
     /**
+    * ルーム情報を取得
+    */
+    ChatWork.prototype.getRoom = function(params) {
+      return this.get('/rooms/' + params.room_id);
+    };
+
+    /**
     * メッセージ送信
     */
     ChatWork.prototype.sendMessage = function(params) { 
