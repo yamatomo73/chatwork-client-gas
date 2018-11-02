@@ -32,6 +32,13 @@
     };
 
     /**
+    * ルームのメンバー一覧取得
+    */
+    ChatWork.prototype.getRoomMembers = function(params) {
+      return this.get('/rooms/' + params.room_id　+ '/members');
+    };
+
+    /**
     * メッセージ送信
     */
     ChatWork.prototype.sendMessage = function(params) { 
