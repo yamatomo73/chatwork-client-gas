@@ -70,6 +70,19 @@
     };
     
     /**
+    * メッセージ更新
+    * @returns {object} APIのレスポンス
+    * @see http://developer.chatwork.com/ja/endpoint_rooms.html#PUT-rooms-room_id-messages-message_id
+    */
+    ChatWork.prototype.updateMessage = function(params) { 
+      var put_data = {
+        'body': params.body
+      }
+      
+      return this.put('/rooms/'+ params.room_id +'/messages/' + params.message_id, put_data);
+    };
+
+    /**
     * メッセージを既読にする
     * @returns {(object|boolean)} APIのレスポンス。APIに失敗した場合は false
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#PUT-rooms-room_id-messages-read
