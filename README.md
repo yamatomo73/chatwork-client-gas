@@ -1,9 +1,17 @@
-ChatWork Client for Google Apps Script
+ChatWork Client for Google Apps Script(拡張版)
 
 =================
 
-Google App Script Project Key: `M6TcEyniCs1xb3sdXFF_FhI-MNonZQ_sT`
+## 概要
+Google Apps Script で ChatWork を便利に使うためのライブラリです。
 
-## 注意
-チャットワーク社 公式ライブラリではないので使用上起きた問題についての責任は負いかねます。
-自己責任での利用をお願いします
+## 元リポジトリ
+https://github.com/cw-shibuya/chatwork-client-gas
+
+### ライセンス
+https://github.com/cw-shibuya/chatwork-client-gas/blob/master/LICENSE
+
+## 参考リンク
+
+- API ドキュメント  
+http://developer.chatwork.com/ja/index.html
