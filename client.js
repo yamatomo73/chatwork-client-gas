@@ -115,7 +115,7 @@
       for(var i = 0; i < keys.length; i++) {
         var key = keys[i];
         if (key in obj) {
-          filter_obj[key] = this._getStringValue(obj, key);
+          filter_obj[key] = this._getValue(obj, key);
         }
       }
       return filter_obj;
