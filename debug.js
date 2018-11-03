@@ -6,6 +6,28 @@ if (undefined ===  ChatWorkClient) {
 var TEST_POST_ROOM_ID = 127836835;
 var API_KEY = PropertiesService.getScriptProperties().getProperty('CW_API_KEY');
 
+/**
+* ルーム情報更新
+*/
+function testUpdateRoom() {
+  var client = ChatWorkClient.factory({token: API_KEY});
+  
+  // ルーム情報参照
+  var response = client.updateRoom({
+    room_id: TEST_POST_ROOM_ID,
+    description: Math.random(),
+    icon_preset: 'security',
+    name: '康夫の家族会議室' + Utilities.formatDate( new Date(), 'Asia/Tokyo', 'yyyy-MM-dd HH:mm:ss'),
+  });
+  
+  Logger.log(response);
+  
+  return response;
+}
+
+/*
+* ルーム更新系のシナリオテスト
+*/
 function testRoomCRUDScenario() {
   var client = ChatWorkClient.factory({token: API_KEY});
   
@@ -15,9 +37,12 @@ function testRoomCRUDScenario() {
   });
   
   Logger.log(response);
-  
+ 
 }
 
+/*
+*  メッセージ系のシナリオテスト
+*/
 function testRoomMessageScenario() {
   var client = ChatWorkClient.factory({token: API_KEY});
   

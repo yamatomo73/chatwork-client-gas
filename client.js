@@ -91,6 +91,41 @@
     };
     
     
+    /*
+    * オブジェクトから指定したキーだけを抽出する
+    * オブジェクトにキーがない場合は、無視される
+    */
+    ChatWork.prototype._objectFilter = function(obj, keys) {
+      var filter_obj = {};
+      var optional_keys = ['description', 'icon_preset', 'name'];
+      for(var i = 0; i < keys.length; i++) {
+        var key = keys[i];
+        if (key in obj) {
+          filter_obj[key] = this._getValue(obj, key);
+        }
+      }
+      return filter_obj;
+    };
+    
+    /*
+    * オブジェクトから値を取り出す
+    * キーが存在しない場合は default_value を返却する
+    */
+    ChatWork.prototype._getValue = function(params, key, default_value) {
+      params = params || {};
+      default_value = default_value === undefined ? null : default_value;
+      return key in params ? params[key] : default_value;
+    };
+    
+    /*
+    * オブジェクトから値を文字列として取り出す
+    * キーが存在しない場合は default_value を返却する
+    */
+    ChatWork.prototype._getStringValue = function(params, key, default_value) {
+      var value = this._getValue(params, key, default_value);
+      return String(value);
+    };
+    
     ChatWork.prototype._sendRequest = function(params)
     {
       var url = this.base_url + params.path;
@@ -107,29 +142,6 @@
       }
       
       return false;
-    };
-    
-    ChatWork.prototype._objectFilter = function(obj, keys) {
-      var filter_obj = {};
-      var optional_keys = ['description', 'icon_preset', 'name'];
-      for(var i = 0; i < keys.length; i++) {
-        var key = keys[i];
-        if (key in obj) {
-          filter_obj[key] = this._getValue(obj, key);
-        }
-      }
-      return filter_obj;
-    };
-    
-    ChatWork.prototype._getValue = function(params, key, default_value) {
-      params = params || {};
-      default_value = default_value === undefined ? null : default_value;
-      return key in params ? params[key] : default_value;
-    };
-    
-    ChatWork.prototype._getStringValue = function(params, key, default_value) {
-      var value = this._getValue(params, key, default_value);
-      return String(value);
     };
     
     ChatWork.prototype.post = function(endpoint, post_data) {
