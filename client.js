@@ -8,6 +8,14 @@
     };
     
     /**
+    * 自分自身の情報を取得
+    * @see http://developer.chatwork.com/ja/endpoint_me.html#GET-me
+    */
+    ChatWork.prototype.getMe = function() {
+      return this.httpGet('/me');
+    };
+
+    /**
     * 自分のステータスを取得
     * @see http://developer.chatwork.com/ja/endpoint_my.html#GET-my-status
     */
