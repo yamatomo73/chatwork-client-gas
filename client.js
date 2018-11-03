@@ -39,6 +39,25 @@
     };
     
     /**
+    * ルームのメンバー一括更新
+    */
+    ChatWork.prototype.updateRoomMembers = function(params) {
+      var param_keys = ['members_admin_ids', 'members_member_ids', 'members_readonly_ids'];
+      var put_data = this._objectFilter(params, param_keys, function(value) {return value.join(',');} );
+      return this.put('/rooms/' + params.room_id　+ '/members', put_data);
+    };
+
+    /**
+    * 未取得ルームメッセージ取得
+    * @see http://developer.chatwork.com/ja/endpoint_rooms.html#POST-rooms-room_id-messages
+    */
+    ChatWork.prototype.getRoomMessages = function(params) { 
+      var param_keys = ['force'];
+      var get_data = this._objectFilter(params, param_keys);
+      return this.get('/rooms/'+ params.room_id +'/messages', get_data);
+    };
+
+    /**
     * メッセージ送信
     */
     ChatWork.prototype.sendMessage = function(params) { 
@@ -95,12 +114,15 @@
     * オブジェクトから指定したキーだけを抽出する
     * オブジェクトにキーがない場合は、無視される
     */
-    ChatWork.prototype._objectFilter = function(obj, keys) {
+    ChatWork.prototype._objectFilter = function(obj, keys, converter_func) {
       var filter_obj = {};
       for(var i = 0; i < keys.length; i++) {
         var key = keys[i];
         if (key in obj) {
           filter_obj[key] = this._getValue(obj, key);
+          if (typeof converter_func === 'function') {
+            filter_obj[key] = converter_func(filter_obj[key]);
+          }
         }
       }
       return filter_obj;
