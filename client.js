@@ -302,13 +302,54 @@
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#GET-rooms-room_id-files-file_id
     */
     ChatWork.prototype.getRoomFile = function(params) {
-      var param_keys = [''];
       var get_data = {
         'create_download_url': this._toApiBoolean(this._getValue(params, 'create_download_url', false)),
       };
       return this.httpGet('/rooms/' + params.room_id + '/files/' + params.file_id, get_data);
     };
     
+    /**
+    * 招待リンクを取得する
+    * @returns {object} APIのレスポンス
+    * @see http://developer.chatwork.com/ja/endpoint_rooms.html#GET-rooms-room_id-link
+    */
+    ChatWork.prototype.getRoomLink = function(params) {
+      return this.httpGet('/rooms/' + params.room_id + '/link');
+    };
+
+    /**
+    * 招待リンクを作成する
+    * @returns {object} APIのレスポンス
+    * @see http://developer.chatwork.com/ja/endpoint_rooms.html#PUT-rooms-room_id-link
+    */
+    ChatWork.prototype.createRoomLink = function(params) {
+      var param_keys = ['code', 'description'];
+      var post_data = this._objectFilter(params, param_keys);
+      post_data['need_acceptance'] = this._toApiBoolean(this._getValue(params, 'need_acceptance', true));
+      return this.httpPost('/rooms/' + params.room_id + '/link', post_data);
+    };
+
+    /**
+    * 招待リンクを変更する
+    * @returns {object} APIのレスポンス
+    * @see http://developer.chatwork.com/ja/endpoint_rooms.html#PUT-rooms-room_id-link
+    */
+    ChatWork.prototype.updateRoomLink = function(params) {
+      var param_keys = ['code', 'description'];
+      var put_data = this._objectFilter(params, param_keys);
+      put_data['need_acceptance'] = this._toApiBoolean(this._getValue(params, 'need_acceptance', true));
+      return this.httpPut('/rooms/' + params.room_id + '/link', put_data);
+    };
+
+    /**
+    * 招待リンクを削除する
+    * @returns {object} APIのレスポンス
+    * @see http://developer.chatwork.com/ja/endpoint_rooms.html#DELETE-rooms-room_id-link
+    */
+    ChatWork.prototype.deleteRoomLink = function(params) {
+      return this.httpDelete('/rooms/' + params.room_id + '/link');
+    };
+
     /**
     * 自分のタスク一覧を取得
     * @see http://developer.chatwork.com/ja/endpoint_my.html#GET-my-tasks
