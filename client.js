@@ -49,6 +49,15 @@
     };
     
     /**
+    * ルーム新規作成
+    * @see http://developer.chatwork.com/ja/endpoint_rooms.html#POST-rooms
+    */
+    ChatWork.prototype.createRoom = function(params) {
+      // TODO
+      throw new Error('NotImplementedError');
+    };
+    
+    /**
     * ルーム情報の更新
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#PUT-rooms-room_id
     */
@@ -57,6 +66,26 @@
       var put_data = this._objectFilter(params, optional_keys);
       
       return this.httpPut('/rooms/' + params.room_id, put_data);
+    };
+    
+    /**
+    * ルーム退出
+    * @returns {boolean} 成功した場合true
+    * @see http://developer.chatwork.com/ja/endpoint_rooms.html#DELETE-rooms-room_id
+    */
+    ChatWork.prototype.leaveRoom = function(params) {
+      this.httpDelete('/rooms/' + params.room_id, {'action_type': 'leave'});
+      return true;
+    };
+    
+    /**
+    * ルーム削除
+    * @returns {boolean} 成功した場合true
+    * @see http://developer.chatwork.com/ja/endpoint_rooms.html#DELETE-rooms-room_id
+    */
+    ChatWork.prototype.deleteRoom = function(params) {
+      this.httpDelete('/rooms/' + params.room_id, {'action_type': 'delete'});
+      return true;
     };
     
     /**
