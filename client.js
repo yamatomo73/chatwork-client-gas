@@ -20,7 +20,7 @@
     ChatWork.prototype.getRoom = function(params) {
       return this.get('/rooms/' + params.room_id);
     };
-
+    
     /**
     * ルーム情報の更新
     */
@@ -30,14 +30,14 @@
       
       return this.put('/rooms/' + params.room_id, put_data);
     };
-
+    
     /**
     * ルームのメンバー一覧取得
     */
     ChatWork.prototype.getRoomMembers = function(params) {
       return this.get('/rooms/' + params.room_id　+ '/members');
     };
-
+    
     /**
     * メッセージ送信
     */
@@ -99,92 +99,92 @@
         'headers': this.headers,
         'payload': this._getValue(params, 'payload', {}),
       };
-    result = UrlFetchApp.fetch(url, options);
-    
-    // リクエストに成功していたら結果を解析して返す
-    if (result.getResponseCode() == 200) {
-      return JSON.parse(result.getContentText())
-    }
-    
-     return false;
-  };
-                  
-  ChatWork.prototype._objectFilter = function(obj, keys) {
-    var filter_obj = {};
-    var optional_keys = ['description', 'icon_preset', 'name'];
-    for(var i = 0; i < keys.length; i++) {
-      var key = keys[i];
-      if (key in obj) {
-        filter_obj[key] = this._getStringValue(obj, key);
+      result = UrlFetchApp.fetch(url, options);
+      
+      // リクエストに成功していたら結果を解析して返す
+      if (result.getResponseCode() == 200) {
+        return JSON.parse(result.getContentText())
       }
-    }
-    return filter_obj;
-  };
-  
-  ChatWork.prototype._getValue = function(params, key, default_value) {
-    params = params || {};
-    default_value = default_value === undefined ? null : default_value;
-    return key in params ? params[key] : default_value;
-  };
-  
-  ChatWork.prototype._deleteNullValueProperties = function(obj) {
-    for (var key in obj) {
-      if (obj[key] === null) {
-        // delete obj[key];
-        Logger.log('delete: ' + key + ' - ' + obj[key]);
+      
+      return false;
+    };
+    
+    ChatWork.prototype._objectFilter = function(obj, keys) {
+      var filter_obj = {};
+      var optional_keys = ['description', 'icon_preset', 'name'];
+      for(var i = 0; i < keys.length; i++) {
+        var key = keys[i];
+        if (key in obj) {
+          filter_obj[key] = this._getStringValue(obj, key);
+        }
       }
-    }
-    return obj;
-  };
-
-  ChatWork.prototype._getStringValue = function(params, key, default_value) {
-    var value = this._getValue(params, key, default_value);
-    return String(value);
-  };
-
-  ChatWork.prototype.post = function(endpoint, post_data) {
-    return this._sendRequest({
-      'method': 'post',
-      'path': endpoint,
-      'payload': post_data
-    });
-  };
+      return filter_obj;
+    };
+    
+    ChatWork.prototype._getValue = function(params, key, default_value) {
+      params = params || {};
+      default_value = default_value === undefined ? null : default_value;
+      return key in params ? params[key] : default_value;
+    };
+    
+    ChatWork.prototype._deleteNullValueProperties = function(obj) {
+      for (var key in obj) {
+        if (obj[key] === null) {
+          // delete obj[key];
+          Logger.log('delete: ' + key + ' - ' + obj[key]);
+        }
+      }
+      return obj;
+    };
+    
+    ChatWork.prototype._getStringValue = function(params, key, default_value) {
+      var value = this._getValue(params, key, default_value);
+      return String(value);
+    };
+    
+    ChatWork.prototype.post = function(endpoint, post_data) {
+      return this._sendRequest({
+        'method': 'post',
+        'path': endpoint,
+        'payload': post_data
+      });
+    };
+    
+    ChatWork.prototype.put = function(endpoint, put_data) {
+      return this._sendRequest({
+        'method': 'put',
+        'path': endpoint,
+        'payload': put_data
+      });
+    };
+    
+    ChatWork.prototype.get = function(endpoint, get_data) { 
+      get_data = get_data || {};
+      
+      var path = endpoint
+      
+      // get_dataがあればクエリーを生成する
+      // かなり簡易的なので必要に応じて拡張する
+      var query_string_list = [];
+      for (var key in get_data) {
+        query_string_list.push(encodeURIComponent(key) + '=' + encodeURIComponent(get_data[key]));
+      }
+      
+      if (query_string_list.length > 0) {
+        path += '?' + query_string_list.join('&'); 
+      }
+      
+      return this._sendRequest({
+        'method': 'get',
+        'path': path
+      });
+    };
+    
+    return ChatWork;
+  })();
   
-  ChatWork.prototype.put = function(endpoint, put_data) {
-    return this._sendRequest({
-      'method': 'put',
-      'path': endpoint,
-      'payload': put_data
-    });
-  };
+  global.ChatWork = ChatWork;
   
-  ChatWork.prototype.get = function(endpoint, get_data) { 
-    get_data = get_data || {};
-    
-    var path = endpoint
-    
-    // get_dataがあればクエリーを生成する
-    // かなり簡易的なので必要に応じて拡張する
-    var query_string_list = [];
-    for (var key in get_data) {
-      query_string_list.push(encodeURIComponent(key) + '=' + encodeURIComponent(get_data[key]));
-    }
-    
-    if (query_string_list.length > 0) {
-      path += '?' + query_string_list.join('&'); 
-    }
-    
-    return this._sendRequest({
-      'method': 'get',
-      'path': path
-    });
-  };
-  
-  return ChatWork;
-})();
-
-global.ChatWork = ChatWork;
-
 })(this);
 
 
