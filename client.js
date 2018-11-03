@@ -97,7 +97,7 @@
       var options = {
         'method': params.method,
         'headers': this.headers,
-        'payload': params.payload || {}
+        'payload': this._getValue(params, 'payload', {}),
       };
     result = UrlFetchApp.fetch(url, options);
     
