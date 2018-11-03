@@ -8,14 +8,33 @@
     };
     
     /**
+    * 自分のステータスを取得
+    * @see http://developer.chatwork.com/ja/endpoint_my.html#GET-my-status
+    */
+    ChatWork.prototype.getMyStatus = function() {
+      return this.httpGet('/my/status');
+    };
+
+    /**
+    * 自分のコンタクトになっているユーザーの一覧
+    * @returns {object} APIのレスポンス
+    * @see http://developer.chatwork.com/ja/endpoint_contacts.html#GET-contacts
+    */
+    ChatWork.prototype.getContacts = function() {
+      return this.httpGet('/contacts');
+    };
+    
+    /**
     * 自分のルーム一覧を取得
+    * @see http://developer.chatwork.com/ja/endpoint_rooms.html#GET-rooms
     */
     ChatWork.prototype.getRooms = function() {
       return this.httpGet('/rooms');
     };
-    
+
     /**
     * ルーム情報を取得
+    * @see http://developer.chatwork.com/ja/endpoint_rooms.html#GET-rooms-room_id
     */
     ChatWork.prototype.getRoom = function(params) {
       return this.httpGet('/rooms/' + params.room_id);
@@ -23,6 +42,7 @@
     
     /**
     * ルーム情報の更新
+    * @see http://developer.chatwork.com/ja/endpoint_rooms.html#PUT-rooms-room_id
     */
     ChatWork.prototype.updateRoom = function(params) {
       var optional_keys = ['description', 'icon_preset', 'name'];
@@ -33,6 +53,7 @@
     
     /**
     * ルームのメンバー一覧取得
+    * @see http://developer.chatwork.com/ja/endpoint_rooms.html#GET-rooms-room_id-members
     */
     ChatWork.prototype.getRoomMembers = function(params) {
       return this.httpGet('/rooms/' + params.room_id　+ '/members');
@@ -40,6 +61,7 @@
     
     /**
     * ルームのメンバー一括更新
+    * @see http://developer.chatwork.com/ja/endpoint_rooms.html#PUT-rooms-room_id-members
     */
     ChatWork.prototype.updateRoomMembers = function(params) {
       var param_keys = ['members_admin_ids', 'members_member_ids', 'members_readonly_ids'];
@@ -59,6 +81,7 @@
 
     /**
     * メッセージ送信
+    * @see http://developer.chatwork.com/ja/endpoint_rooms.html#POST-rooms-room_id-messages
     */
     ChatWork.prototype.sendMessage = function(params) { 
       var post_data = {
@@ -189,6 +212,7 @@
     
     /**
     * 指定したチャットのタスク一覧を取得
+    * @see http://developer.chatwork.com/ja/endpoint_rooms.html#GET-rooms-room_id-tasks
     */
     ChatWork.prototype.getRoomTasks = function(room_id, params) {
       return this.httpGet('/rooms/' + room_id + '/tasks', params);
@@ -196,6 +220,7 @@
     
     /**
     * 自分のタスク一覧を取得
+    * @see http://developer.chatwork.com/ja/endpoint_my.html#GET-my-tasks
     */
     ChatWork.prototype.getMyTasks = function(params) {
       return this.httpGet('/my/tasks', params);
