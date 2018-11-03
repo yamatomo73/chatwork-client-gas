@@ -234,6 +234,22 @@
       return this.httpGet('/incoming_requests');
     };
     
+    /**
+    * 自分に対するコンタクト承認依頼を承認する
+    * @see http://developer.chatwork.com/ja/endpoint_incoming_requests.html#PUT-incoming_requests-request_id
+    */
+    ChatWork.prototype.acceptIncomingRequest = function(params) {
+      return this.httpPut('/incoming_requests/' + params.request_id);
+    };
+    
+    /**
+    * 自分に対するコンタクト承認依頼をキャンセルする
+    * @see http://developer.chatwork.com/ja/endpoint_incoming_requests.html#DELETE-incoming_requests-request_id
+    */
+    ChatWork.prototype.cancelIncomingRequest = function(params) {
+      return this.httpDelete('/incoming_requests/' + params.request_id);
+    };
+    
     
     /*
     * オブジェクトから指定したキーだけを抽出する
