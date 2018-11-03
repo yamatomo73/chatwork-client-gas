@@ -34,6 +34,7 @@
     
     /**
     * 自分のルーム一覧を取得
+    * @returns {object} APIのレスポンス
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#GET-rooms
     */
     ChatWork.prototype.getRooms = function() {
@@ -42,6 +43,7 @@
 
     /**
     * ルーム情報を取得
+    * @returns {object} APIのレスポンス
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#GET-rooms-room_id
     */
     ChatWork.prototype.getRoom = function(params) {
@@ -50,11 +52,31 @@
     
     /**
     * ルーム新規作成
+    * @returns {object} APIのレスポンス
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#POST-rooms
     */
     ChatWork.prototype.createRoom = function(params) {
-      // TODO
-      throw new Error('NotImplementedError');
+      var post_data_base = {
+        'name': params.name,
+        'members_admin_ids': params.members_admin_ids.join(','),
+      };
+      var optional_keys = ['description', 'icon_preset', 'link', 'link_code', 'link_need_acceptance', 'members_member_ids', 'members_readonly_ids'];
+      var optional_post_data = this._objectFilter(params, optional_keys);
+      if ('members_member_ids' in optional_post_data) {
+        optional_post_data['members_member_ids'] = optional_post_data['members_member_ids'].join(',');
+      }
+      if ('members_readonly_ids' in optional_post_data) {
+        optional_post_data['members_readonly_ids'] = optional_post_data['members_readonly_ids'].join(',');
+      }
+      if ('link' in optional_post_data) {
+        optional_post_data['link'] = this._toApiBoolean(optional_post_data['link']);
+      }
+      if ('link_need_acceptance' in optional_post_data) {
+        optional_post_data['link_need_acceptance'] = this._toApiBoolean(optional_post_data['link_need_acceptance']);
+      }
+      
+      var post_data = this._objectMerge(post_data_base, optional_post_data);
+      return this.httpPost('/rooms', post_data);
     };
     
     /**
@@ -123,7 +145,7 @@
     ChatWork.prototype.sendMessage = function(params) { 
       var post_data = {
         'body': params.body,
-        'self_unread': this._getStringValue(params, 'self_unread', 0)
+        'self_unread': this._toApiBoolean(this._getValue(params, 'self_unread', 0)),
       }
       
       return this.httpPost('/rooms/'+ params.room_id +'/messages', post_data);
@@ -288,6 +310,22 @@
     };
     
     
+    /*
+    * boolean に変換する
+    * @returns {boolean}
+    */
+    ChatWork.prototype._toBoolean = function(value) {
+      return ('1' === value || 1 === value || true === value);
+    }
+    
+    /*
+    * API パラメータで指定する boolean 値に変換する
+    * @returns {string}
+    */
+    ChatWork.prototype._toApiBoolean = function(value) {
+      return (this._toBoolean(value)) ? '1' : '0';
+    }
+
     /*
     * オブジェクトから指定したキーだけを抽出する
     * オブジェクトにキーがない場合は、無視される
