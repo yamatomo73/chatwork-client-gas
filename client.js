@@ -226,6 +226,14 @@
       return this.httpGet('/my/tasks', params);
     };
     
+    /**
+    * 自分に対するコンタクト承認依頼一覧を取得する
+    * @see http://developer.chatwork.com/ja/endpoint_incoming_requests.html#GET-incoming_requests
+    */
+    ChatWork.prototype.getIncomingRequests = function() {
+      return this.httpGet('/incoming_requests');
+    };
+    
     
     /*
     * オブジェクトから指定したキーだけを抽出する
