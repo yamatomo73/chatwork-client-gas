@@ -127,16 +127,6 @@
       return key in params ? params[key] : default_value;
     };
     
-    ChatWork.prototype._deleteNullValueProperties = function(obj) {
-      for (var key in obj) {
-        if (obj[key] === null) {
-          // delete obj[key];
-          Logger.log('delete: ' + key + ' - ' + obj[key]);
-        }
-      }
-      return obj;
-    };
-    
     ChatWork.prototype._getStringValue = function(params, key, default_value) {
       var value = this._getValue(params, key, default_value);
       return String(value);
