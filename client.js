@@ -278,6 +278,38 @@
     };
     
     /**
+    * チャットのファイル一覧を取得
+    * @returns {object} APIのレスポンス
+    * @see http://developer.chatwork.com/ja/endpoint_rooms.html#GET-rooms-room_id-files
+    */
+    ChatWork.prototype.getRoomFiles = function(params) {
+      var param_keys = ['account_id'];
+      var get_data = this._objectFilter(params, param_keys);
+      return this.httpGet('/rooms/' + params.room_id + '/files', get_data);
+    };
+    
+    /**
+    * 新しいファイルをアップロード
+    * @see http://developer.chatwork.com/ja/endpoint_rooms.html#POST-rooms-room_id-files
+    */
+    ChatWork.prototype.uploadRoomFile = function(params) {
+      throw new Error('NotImplementedError');
+    };
+    
+    /**
+    * ファイル情報を取得
+    * @returns {object} APIのレスポンス
+    * @see http://developer.chatwork.com/ja/endpoint_rooms.html#GET-rooms-room_id-files-file_id
+    */
+    ChatWork.prototype.getRoomFile = function(params) {
+      var param_keys = [''];
+      var get_data = {
+        'create_download_url': this._toApiBoolean(this._getValue(params, 'create_download_url', false)),
+      };
+      return this.httpGet('/rooms/' + params.room_id + '/files/' + params.file_id, get_data);
+    };
+    
+    /**
     * 自分のタスク一覧を取得
     * @see http://developer.chatwork.com/ja/endpoint_my.html#GET-my-tasks
     */
