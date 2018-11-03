@@ -70,6 +70,40 @@
     };
     
     /**
+    * メッセージを既読にする
+    * @returns {(object|boolean)} APIのレスポンス。APIに失敗した場合は false
+    * @see http://developer.chatwork.com/ja/endpoint_rooms.html#PUT-rooms-room_id-messages-read
+    */
+    ChatWork.prototype.readRoomMessages = function(params) { 
+      var optional_keys = ['message_id'];
+      var put_data = this._objectFilter(params, optional_keys);
+      try {
+        return this.put('/rooms/'+ params.room_id +'/messages/read', put_data);
+      } catch(e) {
+        // すでに既読とか400エラーはfalse
+        Logger.log(e);
+        return false;
+      }
+    };
+    
+    /**
+    * メッセージを未読にする
+    * @returns {(object|boolean)} APIのレスポンス。APIに失敗した場合は false
+    * @see http://developer.chatwork.com/ja/endpoint_rooms.html#PUT-rooms-room_id-messages-unread
+    */
+    ChatWork.prototype.unreadRoomMessages = function(params) { 
+      var param_keys = ['message_id'];
+      var put_data = this._objectFilter(params, param_keys);
+      try {
+        return this.put('/rooms/'+ params.room_id +'/messages/unread', put_data);
+      } catch(e) {
+        // すでに未読とか400エラーはfalse
+        Logger.log(e);
+        return false;
+      }
+    };
+    
+    /**
     * マイチャットへのメッセージを送信
     */
     ChatWork.prototype.sendMessageToMyChat = function(message) {
