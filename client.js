@@ -11,14 +11,14 @@
     * 自分のルーム一覧を取得
     */
     ChatWork.prototype.getRooms = function() {
-      return this.get('/rooms');
+      return this.httpGet('/rooms');
     };
     
     /**
     * ルーム情報を取得
     */
     ChatWork.prototype.getRoom = function(params) {
-      return this.get('/rooms/' + params.room_id);
+      return this.httpGet('/rooms/' + params.room_id);
     };
     
     /**
@@ -28,14 +28,14 @@
       var optional_keys = ['description', 'icon_preset', 'name'];
       var put_data = this._objectFilter(params, optional_keys);
       
-      return this.put('/rooms/' + params.room_id, put_data);
+      return this.httpPut('/rooms/' + params.room_id, put_data);
     };
     
     /**
     * ルームのメンバー一覧取得
     */
     ChatWork.prototype.getRoomMembers = function(params) {
-      return this.get('/rooms/' + params.room_id　+ '/members');
+      return this.httpGet('/rooms/' + params.room_id　+ '/members');
     };
     
     /**
@@ -44,7 +44,7 @@
     ChatWork.prototype.updateRoomMembers = function(params) {
       var param_keys = ['members_admin_ids', 'members_member_ids', 'members_readonly_ids'];
       var put_data = this._objectFilter(params, param_keys, function(value) {return value.join(',');} );
-      return this.put('/rooms/' + params.room_id　+ '/members', put_data);
+      return this.httpPut('/rooms/' + params.room_id　+ '/members', put_data);
     };
 
     /**
@@ -54,7 +54,7 @@
     ChatWork.prototype.getRoomMessages = function(params) { 
       var param_keys = ['force'];
       var get_data = this._objectFilter(params, param_keys);
-      return this.get('/rooms/'+ params.room_id +'/messages', get_data);
+      return this.httpGet('/rooms/'+ params.room_id +'/messages', get_data);
     };
 
     /**
@@ -66,7 +66,7 @@
         'self_unread': this._getStringValue(params, 'self_unread', 0)
       }
       
-      return this.post('/rooms/'+ params.room_id +'/messages', post_data);
+      return this.httpPost('/rooms/'+ params.room_id +'/messages', post_data);
     };
     
     /**
@@ -79,7 +79,16 @@
         'body': params.body
       }
       
-      return this.put('/rooms/'+ params.room_id +'/messages/' + params.message_id, put_data);
+      return this.httpPut('/rooms/'+ params.room_id +'/messages/' + params.message_id, put_data);
+    };
+
+    /**
+    * メッセージ削除
+    * @returns {object} APIのレスポンス
+    * @see http://developer.chatwork.com/ja/endpoint_rooms.html#DELETE-rooms-room_id-messages-message_id
+    */
+    ChatWork.prototype.deleteMessage = function(params) { 
+      return this.httpDelete('/rooms/'+ params.room_id +'/messages/' + params.message_id);
     };
 
     /**
@@ -91,7 +100,7 @@
       var optional_keys = ['message_id'];
       var put_data = this._objectFilter(params, optional_keys);
       try {
-        return this.put('/rooms/'+ params.room_id +'/messages/read', put_data);
+        return this.httpPut('/rooms/'+ params.room_id +'/messages/read', put_data);
       } catch(e) {
         // すでに既読とか400エラーはfalse
         Logger.log(e);
@@ -108,7 +117,7 @@
       var param_keys = ['message_id'];
       var put_data = this._objectFilter(params, param_keys);
       try {
-        return this.put('/rooms/'+ params.room_id +'/messages/unread', put_data);
+        return this.httpPut('/rooms/'+ params.room_id +'/messages/unread', put_data);
       } catch(e) {
         // すでに未読とか400エラーはfalse
         Logger.log(e);
@@ -120,7 +129,7 @@
     * マイチャットへのメッセージを送信
     */
     ChatWork.prototype.sendMessageToMyChat = function(message) {
-      var mydata = this.get('/me');
+      var mydata = this.httpGet('/me');
       
       return this.sendMessage({
         'body': message,
@@ -130,30 +139,66 @@
     
     /**
     * タスク追加
+    * @returns {object} APIのレスポンス
+    * @see http://developer.chatwork.com/ja/endpoint_rooms.html#POST-rooms-room_id-tasks
     */
     ChatWork.prototype.sendTask = function(params) {
-      var to_ids = params.to_id_list.join(',');
-      var post_data = {
+      // 互換性のため
+      if ('to_id_list' in params) {
+        params['to_ids'] = params.to_id_list;
+      }
+      var post_data_base = {
         'body': params.body,
-        'to_ids': to_ids,
-        'limit': (new Number(params.limit)).toFixed() // 指数表記で来ることがあるので、intにする
+        'to_ids': params['to_ids'].join(','),
       };
+      var optional_keys = ['limit'];
+      var optional_post_data = this._objectFilter(params, optional_keys);
+      if ('limit' in optional_post_data) {
+        // limit があれば unix time に変換を試みる
+        optional_post_data['limit'] = this._toUnixTime(optional_post_data['limit']);
+      }
       
-      return this.post('/rooms/'+ params.room_id +'/tasks', post_data);
+      var post_data = this._objectMerge(post_data_base, optional_post_data);
+      return this.httpPost('/rooms/'+ params.room_id +'/tasks', post_data);
+    };
+    
+    /**
+    * タスク情報取得
+    * @returns {object} APIのレスポンス
+    * @see http://developer.chatwork.com/ja/endpoint_rooms.html#POST-rooms-room_id-tasks
+    */
+    ChatWork.prototype.sendTask = function(params) {
+      // 互換性のため
+      if ('to_id_list' in params) {
+        params['to_ids'] = params.to_id_list;
+      }
+      var post_data_base = {
+        'body': params.body,
+        'to_ids': params['to_ids'].join(','),
+      };
+      var optional_keys = ['limit'];
+      var optional_post_data = this._objectFilter(params, optional_keys);
+      if ('limit' in optional_post_data) {
+        // limit があれば unix time に変換を試みる
+        optional_post_data['limit'] = this._toUnixTime(optional_post_data['limit']);
+      }
+      
+      var post_data = this._objectMerge(post_data_base, optional_post_data);
+      return this.httpPost('/rooms/'+ params.room_id +'/tasks', post_data);
     };
     
     /**
     * 指定したチャットのタスク一覧を取得
     */
     ChatWork.prototype.getRoomTasks = function(room_id, params) {
-      return this.get('/rooms/' + room_id + '/tasks', params);
+      return this.httpGet('/rooms/' + room_id + '/tasks', params);
     };
     
     /**
     * 自分のタスク一覧を取得
     */
     ChatWork.prototype.getMyTasks = function(params) {
-      return this.get('/my/tasks', params);
+      return this.httpGet('/my/tasks', params);
     };
     
     
@@ -175,6 +220,38 @@
       return filter_obj;
     };
     
+    /*
+    * unix timeに変換する
+    * @returns {(number|null)} unix time。無効な値は null
+    */
+    ChatWork.prototype._toUnixTime = function(value) {
+      switch (typeof value) {
+        case 'string':
+        case 'number':
+          return (new Number(optional_post_data['value'])).toFixed();
+      }
+      if (value instanceof Date) {
+        return (new Number(Math.floor(value.getTime() / 1000))).toFixed();
+      }
+      
+      // 未対応
+      return null;
+    };
+
+    /*
+    * unix timeに変換する
+    * @returns {(number|null)} unix time。無効な値は null
+    */
+    ChatWork.prototype._objectMerge = function(value) {
+      var result = {};
+      for(var i = 0; i < arguments.length; ++i) {
+        for(var key in arguments[i]) {
+          result[key] = arguments[i][key];
+        }
+      }
+      return result;
+    };
+
     /*
     * オブジェクトから値を取り出す
     * キーが存在しない場合は default_value を返却する
@@ -212,7 +289,7 @@
       return false;
     };
     
-    ChatWork.prototype.post = function(endpoint, post_data) {
+    ChatWork.prototype.httpPost = function(endpoint, post_data) {
       return this._sendRequest({
         'method': 'post',
         'path': endpoint,
@@ -220,7 +297,7 @@
       });
     };
     
-    ChatWork.prototype.put = function(endpoint, put_data) {
+    ChatWork.prototype.httpPut = function(endpoint, put_data) {
       return this._sendRequest({
         'method': 'put',
         'path': endpoint,
@@ -228,7 +305,15 @@
       });
     };
     
-    ChatWork.prototype.get = function(endpoint, get_data) { 
+    ChatWork.prototype.httpDelete = function(endpoint, put_data) {
+      return this._sendRequest({
+        'method': 'delete',
+        'path': endpoint,
+        'payload': put_data
+      });
+    };
+    
+    ChatWork.prototype.httpGet = function(endpoint, get_data) { 
       get_data = get_data || {};
       
       var path = endpoint
