@@ -1,3 +1,294 @@
+/**
+* ChatWorkClientの作成
+*
+* <h3>利用例</h3>
+* <pre>
+* var cw = ChatWorkClient.factory({token: xxx});
+* cw.sendMessage({room_id: xx, body: xx});
+* </pre>
+* @param {assoc} config
+*/
+function factory(config) {
+  return new ChatWork(config);
+};
+
+/**
+* 自分自身の情報を取得
+* @see http://developer.chatwork.com/ja/endpoint_me.html#GET-me
+*/
+function getMen() {
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");
+};
+
+/**
+* 自分のステータスを取得
+* @see http://developer.chatwork.com/ja/endpoint_my.html#GET-my-status
+*/
+function getMyStatusn() {
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");
+};
+
+/**
+* 自分のコンタクトになっているユーザーの一覧
+* @returns {object} APIのレスポンス
+* @see http://developer.chatwork.com/ja/endpoint_contacts.html#GET-contacts
+*/
+function getContactsn() {
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");
+};
+
+/**
+* 自分のルーム一覧を取得
+* @returns {object} APIのレスポンス
+* @see http://developer.chatwork.com/ja/endpoint_rooms.html#GET-rooms
+*/
+function getRoomsn() {
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");
+};
+
+/**
+* ルーム情報を取得
+* @returns {object} APIのレスポンス
+* @see http://developer.chatwork.com/ja/endpoint_rooms.html#GET-rooms-room_id
+*/
+function getRoomn(params) {
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");
+};
+
+/**
+* ルーム新規作成
+* @returns {object} APIのレスポンス
+* @see http://developer.chatwork.com/ja/endpoint_rooms.html#POST-rooms
+*/
+function createRoomn(params) {
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");
+};
+
+/**
+* ルーム情報の更新
+* @see http://developer.chatwork.com/ja/endpoint_rooms.html#PUT-rooms-room_id
+*/
+function updateRoomn(params) {
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");
+};
+
+/**
+* ルーム退出
+* @returns {boolean} 成功した場合true
+* @see http://developer.chatwork.com/ja/endpoint_rooms.html#DELETE-rooms-room_id
+*/
+function leaveRoomn(params) {
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");
+};
+
+/**
+* ルーム削除
+* @returns {boolean} 成功した場合true
+* @see http://developer.chatwork.com/ja/endpoint_rooms.html#DELETE-rooms-room_id
+*/
+function deleteRoomn(params) {
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");
+};
+
+/**
+* ルームのメンバー一覧取得
+* @see http://developer.chatwork.com/ja/endpoint_rooms.html#GET-rooms-room_id-members
+*/
+function getRoomMembersn(params) {
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");
+};
+
+/**
+* ルームのメンバー一括更新
+* @see http://developer.chatwork.com/ja/endpoint_rooms.html#PUT-rooms-room_id-members
+*/
+function updateRoomMembersn(params) {
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");
+};
+
+/**
+* 未取得ルームメッセージ取得
+* @see http://developer.chatwork.com/ja/endpoint_rooms.html#POST-rooms-room_id-messages
+*/
+function getRoomMessagesn(params) { 
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");
+};
+
+/**
+* メッセージ送信
+* @see http://developer.chatwork.com/ja/endpoint_rooms.html#POST-rooms-room_id-messages
+*/
+function sendMessagen(params) { 
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");
+};
+
+/**
+* メッセージ更新
+* @returns {object} APIのレスポンス
+* @see http://developer.chatwork.com/ja/endpoint_rooms.html#PUT-rooms-room_id-messages-message_id
+*/
+function updateMessagen(params) { 
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");
+};
+
+/**
+* メッセージ削除
+* @returns {object} APIのレスポンス
+* @see http://developer.chatwork.com/ja/endpoint_rooms.html#DELETE-rooms-room_id-messages-message_id
+*/
+function deleteMessagen(params) { 
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");
+};
+
+/**
+* メッセージを既読にする
+* @returns {(object|boolean)} APIのレスポンス。APIに失敗した場合は false
+* @see http://developer.chatwork.com/ja/endpoint_rooms.html#PUT-rooms-room_id-messages-read
+*/
+function readRoomMessagesn(params) { 
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");
+};
+
+/**
+* メッセージを未読にする
+* @returns {(object|boolean)} APIのレスポンス。APIに失敗した場合は false
+* @see http://developer.chatwork.com/ja/endpoint_rooms.html#PUT-rooms-room_id-messages-unread
+*/
+function unreadRoomMessagesn(params) { 
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");
+};
+
+/**
+* マイチャットへのメッセージを送信
+*/
+function sendMessageToMyChatn(message) {
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");
+};
+
+/**
+* タスク追加
+* @returns {object} APIのレスポンス
+* @see http://developer.chatwork.com/ja/endpoint_rooms.html#POST-rooms-room_id-tasks
+*/
+function sendTaskn(params) {
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");
+};
+
+/**
+* タスク情報取得
+* @returns {object} APIのレスポンス
+* @see http://developer.chatwork.com/ja/endpoint_rooms.html#POST-rooms-room_id-tasks
+*/
+function sendTaskn(params) {
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");
+};
+
+/**
+* 指定したチャットのタスク一覧を取得
+* @see http://developer.chatwork.com/ja/endpoint_rooms.html#GET-rooms-room_id-tasks
+*/
+function getRoomTasksn(room_id, params) {
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");  
+};
+
+/**
+* チャットのファイル一覧を取得
+* @returns {object} APIのレスポンス
+* @see http://developer.chatwork.com/ja/endpoint_rooms.html#GET-rooms-room_id-files
+*/
+function getRoomFilesn(params) {
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");  
+};
+
+/**
+* 新しいファイルをアップロード
+* @see http://developer.chatwork.com/ja/endpoint_rooms.html#POST-rooms-room_id-files
+*/
+function uploadRoomFilen(params) {
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");   
+};
+
+/**
+* ファイル情報を取得
+* @returns {object} APIのレスポンス
+* @see http://developer.chatwork.com/ja/endpoint_rooms.html#GET-rooms-room_id-files-file_id
+*/
+function getRoomFilen(params) {
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");  
+  
+};
+
+/**
+* 招待リンクを取得する
+* @returns {object} APIのレスポンス
+* @see http://developer.chatwork.com/ja/endpoint_rooms.html#GET-rooms-room_id-link
+*/
+function getRoomLinkn(params) {
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");   
+};
+
+/**
+* 招待リンクを作成する
+* @returns {object} APIのレスポンス
+* @see http://developer.chatwork.com/ja/endpoint_rooms.html#PUT-rooms-room_id-link
+*/
+function createRoomLinkn(params) {
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");    
+  
+};
+
+/**
+* 招待リンクを変更する
+* @returns {object} APIのレスポンス
+* @see http://developer.chatwork.com/ja/endpoint_rooms.html#PUT-rooms-room_id-link
+*/
+function updateRoomLinkn(params) {
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");    
+};
+
+/**
+* 招待リンクを削除する
+* @returns {object} APIのレスポンス
+* @see http://developer.chatwork.com/ja/endpoint_rooms.html#DELETE-rooms-room_id-link
+*/
+function deleteRoomLinkn(params) {
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");    
+};
+
+/**
+* 自分のタスク一覧を取得
+* @see http://developer.chatwork.com/ja/endpoint_my.html#GET-my-tasks
+*/
+function getMyTasksn(params) {
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");    
+  
+};
+
+/**
+* 自分に対するコンタクト承認依頼一覧を取得する
+* @see http://developer.chatwork.com/ja/endpoint_incoming_requests.html#GET-incoming_requests
+*/
+function getIncomingRequestsn() {
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");    
+};
+
+/**
+* 自分に対するコンタクト承認依頼を承認する
+* @see http://developer.chatwork.com/ja/endpoint_incoming_requests.html#PUT-incoming_requests-request_id
+*/
+function acceptIncomingRequestn(params) {
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");   
+};
+
+/**
+* 自分に対するコンタクト承認依頼をキャンセルする
+* @see http://developer.chatwork.com/ja/endpoint_incoming_requests.html#DELETE-incoming_requests-request_id
+*/
+function cancelIncomingRequestn(params) {
+  throw new Error("このメソッドは直接呼び出せません。createメソッドをコールし取得したインスタンスより呼び出してください。");    
+};
+
+
 (function(global){
   var ChatWork = (function() {
     
@@ -538,18 +829,3 @@
   global.ChatWork = ChatWork;
   
 })(this);
-
-
-/**
-* ChatWorkClientの作成
-*
-* <h3>利用例</h3>
-* <pre>
-* var cw = ChatWorkClient.factory({token: xxx});
-* cw.sendMessage({room_id: xx, body: xx});
-* </pre>
-* @param {assoc} config
-*/
-function factory(config) {
-  return new ChatWork(config);
-};
