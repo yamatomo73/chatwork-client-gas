@@ -1,8 +1,3 @@
-if (undefined ===  ChatWorkClient) {
-  var global = (function(){return this})();
-  var ChatWorkClient = global;
-}
-
 // ------------------------------
 // 実行用コンフィグレーション
 // ------------------------------
@@ -17,11 +12,15 @@ var TEST_CONTACT_ACCOUNT_ID_2 = PropertiesService.getScriptProperties().getPrope
 // TEST_ACCOUNT_ID が管理者のルーム
 var TEST_POST_ROOM_ID =  PropertiesService.getScriptProperties().getProperty('TEST_POST_ROOM_ID');;
 
+function _getChatWorkClient() {
+  return factory({token: API_KEY});
+}
+
 /*
 * 招待リンク削除
 */
 function testDeleteRoomLink() {
-  var client = ChatWorkClient.factory({token: API_KEY});
+  var client = _getChatWorkClient();
   
   var response = client.deleteRoomLink({
     room_id: TEST_POST_ROOM_ID,
@@ -35,7 +34,7 @@ function testDeleteRoomLink() {
 * 招待リンク更新
 */
 function testUpdateRoomLink() {
-  var client = ChatWorkClient.factory({token: API_KEY});
+  var client = _getChatWorkClient();
   
   var response = client.updateRoomLink({
     room_id: TEST_POST_ROOM_ID,
@@ -52,7 +51,7 @@ function testUpdateRoomLink() {
 * 招待リンク作成
 */
 function testCreateRoomLink() {
-  var client = ChatWorkClient.factory({token: API_KEY});
+  var client = _getChatWorkClient();
   
   var response = client.createRoomLink({
     room_id: TEST_POST_ROOM_ID,
@@ -69,7 +68,7 @@ function testCreateRoomLink() {
 * ファイル取得
 */
 function testRoomFile() {
-  var client = ChatWorkClient.factory({token: API_KEY});
+  var client = _getChatWorkClient();
   
   var room_files = testRoomFiles();
   
@@ -87,7 +86,7 @@ function testRoomFile() {
 * ファイル一覧取得
 */
 function testRoomFiles() {
-  var client = ChatWorkClient.factory({token: API_KEY});
+  var client = _getChatWorkClient();
   
   var response = client.getRoomFiles({
     room_id: TEST_POST_ROOM_ID,
@@ -107,7 +106,7 @@ function testRoomFiles() {
 * ルーム削除
 */
 function testDeleteRoom() {
-  var client = ChatWorkClient.factory({token: API_KEY});
+  var client = _getChatWorkClient();
 
   var response = testCreateRoom();
   
@@ -122,7 +121,7 @@ function testDeleteRoom() {
 * ルーム作成
 */
 function testCreateRoom() {
-  var client = ChatWorkClient.factory({token: API_KEY});
+  var client = _getChatWorkClient();
 
   /*
   // ルーム作成
@@ -154,7 +153,7 @@ function testCreateRoom() {
 * ルームから退出
 */
 function testLeaveRoom() {
-  var client = ChatWorkClient.factory({token: API_KEY});
+  var client = _getChatWorkClient();
 
   // ルームから退出
   var response = client.leaveRoom({
@@ -169,7 +168,8 @@ function testLeaveRoom() {
 * 自分自身の情報
 */
 function testGetMe() {
-  var client = ChatWorkClient.factory({token: API_KEY});
+ // var client = _getChatWorkClient();
+  var client = factory({token:API_KEY});
 
   // 取得
   var response = client.getMe();
@@ -182,7 +182,7 @@ function testGetMe() {
 * コンタクト承認を拒否
 */
 function testCancelIncomingRequest() {
-  var client = ChatWorkClient.factory({token: API_KEY});
+  var client = _getChatWorkClient();
 
   // 自分へのコンタクト承認依頼一覧取得
   var response = testGetIncomingRequests();
@@ -200,7 +200,7 @@ function testCancelIncomingRequest() {
 * コンタクト承認
 */
 function testAcceptIncomingRequest() {
-  var client = ChatWorkClient.factory({token: API_KEY});
+  var client = _getChatWorkClient();
 
   // 自分へのコンタクト承認依頼一覧取得
   var response = testGetIncomingRequests();
@@ -218,7 +218,7 @@ function testAcceptIncomingRequest() {
 * 自分へのコンタクト承認依頼一覧取得
 */
 function testGetIncomingRequests() {
-  var client = ChatWorkClient.factory({token: API_KEY});
+  var client = _getChatWorkClient();
 
   // 自分へのコンタクト承認依頼一覧取得
   var response = client.getIncomingRequests();
@@ -231,7 +231,7 @@ function testGetIncomingRequests() {
 * コンタクト一覧を取得する
 */
 function testGetContacts() {
-  var client = ChatWorkClient.factory({token: API_KEY});
+  var client = _getChatWorkClient();
 
   // 自分のコンタクト一覧取得
   var response = client.getContacts();
@@ -244,7 +244,7 @@ function testGetContacts() {
 * 自分のタスク一覧を取得する
 */
 function testGetMyTasks() {
-  var client = ChatWorkClient.factory({token: API_KEY});
+  var client = _getChatWorkClient();
 
   //testSendTask();
   
@@ -266,7 +266,7 @@ function testGetMyTasks() {
 * タスク一覧を取得する
 */
 function testGetRoomTasks() {
-  var client = ChatWorkClient.factory({token: API_KEY});
+  var client = _getChatWorkClient();
 
   //testSendTask();
   
@@ -288,7 +288,7 @@ function testGetRoomTasks() {
 * タスクを追加する
 */
 function testSendTask() {
-  var client = ChatWorkClient.factory({token: API_KEY});
+  var client = _getChatWorkClient();
 
   // 期限なしタスク追加
   var response = client.sendTask({
@@ -314,7 +314,7 @@ function testSendTask() {
 * メッセージを削除する
 */
 function testDeleteMessages() {
-  var client = ChatWorkClient.factory({token: API_KEY});
+  var client = _getChatWorkClient();
 
   var send_message = testRoomSendMessage();
   
@@ -338,7 +338,7 @@ function testDeleteMessages() {
 * メッセージを更新する
 */
 function testUpdateMessages() {
-  var client = ChatWorkClient.factory({token: API_KEY});
+  var client = _getChatWorkClient();
 
   var send_message = testRoomSendMessage();
   
@@ -355,7 +355,7 @@ function testUpdateMessages() {
 * メッセージを既読にする
 */
 function testUnreadRoomMessages() {
-  var client = ChatWorkClient.factory({token: API_KEY});
+  var client = _getChatWorkClient();
 
   var room_messages = testGetRoomMessages();
   Logger.log(room_messages[0]);
@@ -384,7 +384,7 @@ function testUnreadRoomMessages() {
 * メッセージを既読にする
 */
 function testReadRoomMessages() {
-  var client = ChatWorkClient.factory({token: API_KEY});
+  var client = _getChatWorkClient();
 
   // テスト発言１回目
   var response1 = testRoomSendMessage();
@@ -418,7 +418,7 @@ function testReadRoomMessages() {
 * ルームの未取得メッセージ情報取得
 */
 function testGetRoomMessages() {
-  var client = ChatWorkClient.factory({token: API_KEY});
+  var client = _getChatWorkClient();
 
   // テスト発言
   testRoomSendMessage();
@@ -449,7 +449,7 @@ function testGetRoomMessages() {
 * ルーム情報更新
 */
 function testUpdateRoom() {
-  var client = ChatWorkClient.factory({token: API_KEY});
+  var client = _getChatWorkClient();
   
   // ルーム情報参照
   var response = client.updateRoom({
@@ -468,7 +468,7 @@ function testUpdateRoom() {
 * ルームメンバー更新
 */
 function testUpdateRoomMembers() {
-  var client = ChatWorkClient.factory({token: API_KEY});
+  var client = _getChatWorkClient();
   
   // 管理者だけにする
   var response = client.updateRoomMembers({
@@ -498,7 +498,7 @@ function testUpdateRoomMembers() {
 * ルーム更新系のシナリオテスト
 */
 function testRoomCRUDScenario() {
-  var client = ChatWorkClient.factory({token: API_KEY});
+  var client = _getChatWorkClient();
   
   // ルーム情報参照
   var response = client.getRoom({
@@ -513,7 +513,7 @@ function testRoomCRUDScenario() {
 *  メッセージ系のシナリオテスト
 */
 function testRoomSendMessage() {
-  var client = ChatWorkClient.factory({token: API_KEY});
+  var client = _getChatWorkClient();
   
   // メッセージ送信
   var response = client.sendMessage({

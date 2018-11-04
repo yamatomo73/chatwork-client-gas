@@ -7,9 +7,10 @@
 * cw.sendMessage({room_id: xx, body: xx});
 * </pre>
 * @param {assoc} config
+* @return {ChatWorkClient} ChatWorkClientのインスタンス
 */
 function factory(config) {
-  return new ChatWork(config);
+  return new ChatWorkClient(config);
 };
 
 /**
@@ -290,9 +291,9 @@ function cancelIncomingRequestn(params) {
 
 
 (function(global){
-  var ChatWork = (function() {
+    var ChatWorkClient = (function() {
     
-    function ChatWork(config)
+    function ChatWorkClient(config)
     {
       this.base_url = 'https://api.chatwork.com/v2';
       this.headers  = {'X-ChatWorkToken': config.token};  
@@ -302,7 +303,7 @@ function cancelIncomingRequestn(params) {
     * 自分自身の情報を取得
     * @see http://developer.chatwork.com/ja/endpoint_me.html#GET-me
     */
-    ChatWork.prototype.getMe = function() {
+    ChatWorkClient.prototype.getMe = function() {
       return this.httpGet('/me');
     };
 
@@ -310,7 +311,7 @@ function cancelIncomingRequestn(params) {
     * 自分のステータスを取得
     * @see http://developer.chatwork.com/ja/endpoint_my.html#GET-my-status
     */
-    ChatWork.prototype.getMyStatus = function() {
+    ChatWorkClient.prototype.getMyStatus = function() {
       return this.httpGet('/my/status');
     };
 
@@ -319,7 +320,7 @@ function cancelIncomingRequestn(params) {
     * @returns {object} APIのレスポンス
     * @see http://developer.chatwork.com/ja/endpoint_contacts.html#GET-contacts
     */
-    ChatWork.prototype.getContacts = function() {
+    ChatWorkClient.prototype.getContacts = function() {
       return this.httpGet('/contacts');
     };
     
@@ -328,7 +329,7 @@ function cancelIncomingRequestn(params) {
     * @returns {object} APIのレスポンス
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#GET-rooms
     */
-    ChatWork.prototype.getRooms = function() {
+    ChatWorkClient.prototype.getRooms = function() {
       return this.httpGet('/rooms');
     };
 
@@ -337,7 +338,7 @@ function cancelIncomingRequestn(params) {
     * @returns {object} APIのレスポンス
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#GET-rooms-room_id
     */
-    ChatWork.prototype.getRoom = function(params) {
+    ChatWorkClient.prototype.getRoom = function(params) {
       return this.httpGet('/rooms/' + params.room_id);
     };
     
@@ -346,7 +347,7 @@ function cancelIncomingRequestn(params) {
     * @returns {object} APIのレスポンス
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#POST-rooms
     */
-    ChatWork.prototype.createRoom = function(params) {
+    ChatWorkClient.prototype.createRoom = function(params) {
       var post_data_base = {
         'name': params.name,
         'members_admin_ids': params.members_admin_ids.join(','),
@@ -374,7 +375,7 @@ function cancelIncomingRequestn(params) {
     * ルーム情報の更新
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#PUT-rooms-room_id
     */
-    ChatWork.prototype.updateRoom = function(params) {
+    ChatWorkClient.prototype.updateRoom = function(params) {
       var optional_keys = ['description', 'icon_preset', 'name'];
       var put_data = this._objectFilter(params, optional_keys);
       
@@ -386,7 +387,7 @@ function cancelIncomingRequestn(params) {
     * @returns {boolean} 成功した場合true
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#DELETE-rooms-room_id
     */
-    ChatWork.prototype.leaveRoom = function(params) {
+    ChatWorkClient.prototype.leaveRoom = function(params) {
       this.httpDelete('/rooms/' + params.room_id, {'action_type': 'leave'});
       return true;
     };
@@ -396,7 +397,7 @@ function cancelIncomingRequestn(params) {
     * @returns {boolean} 成功した場合true
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#DELETE-rooms-room_id
     */
-    ChatWork.prototype.deleteRoom = function(params) {
+    ChatWorkClient.prototype.deleteRoom = function(params) {
       this.httpDelete('/rooms/' + params.room_id, {'action_type': 'delete'});
       return true;
     };
@@ -405,7 +406,7 @@ function cancelIncomingRequestn(params) {
     * ルームのメンバー一覧取得
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#GET-rooms-room_id-members
     */
-    ChatWork.prototype.getRoomMembers = function(params) {
+    ChatWorkClient.prototype.getRoomMembers = function(params) {
       return this.httpGet('/rooms/' + params.room_id　+ '/members');
     };
     
@@ -413,7 +414,7 @@ function cancelIncomingRequestn(params) {
     * ルームのメンバー一括更新
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#PUT-rooms-room_id-members
     */
-    ChatWork.prototype.updateRoomMembers = function(params) {
+    ChatWorkClient.prototype.updateRoomMembers = function(params) {
       var param_keys = ['members_admin_ids', 'members_member_ids', 'members_readonly_ids'];
       var put_data = this._objectFilter(params, param_keys, function(value) {return value.join(',');} );
       return this.httpPut('/rooms/' + params.room_id　+ '/members', put_data);
@@ -423,7 +424,7 @@ function cancelIncomingRequestn(params) {
     * 未取得ルームメッセージ取得
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#POST-rooms-room_id-messages
     */
-    ChatWork.prototype.getRoomMessages = function(params) { 
+    ChatWorkClient.prototype.getRoomMessages = function(params) { 
       var param_keys = ['force'];
       var get_data = this._objectFilter(params, param_keys);
       return this.httpGet('/rooms/'+ params.room_id +'/messages', get_data);
@@ -433,7 +434,7 @@ function cancelIncomingRequestn(params) {
     * メッセージ送信
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#POST-rooms-room_id-messages
     */
-    ChatWork.prototype.sendMessage = function(params) { 
+    ChatWorkClient.prototype.sendMessage = function(params) { 
       var post_data = {
         'body': params.body,
         'self_unread': this._toApiBoolean(this._getValue(params, 'self_unread', 0)),
@@ -447,7 +448,7 @@ function cancelIncomingRequestn(params) {
     * @returns {object} APIのレスポンス
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#PUT-rooms-room_id-messages-message_id
     */
-    ChatWork.prototype.updateMessage = function(params) { 
+    ChatWorkClient.prototype.updateMessage = function(params) { 
       var put_data = {
         'body': params.body
       }
@@ -460,7 +461,7 @@ function cancelIncomingRequestn(params) {
     * @returns {object} APIのレスポンス
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#DELETE-rooms-room_id-messages-message_id
     */
-    ChatWork.prototype.deleteMessage = function(params) { 
+    ChatWorkClient.prototype.deleteMessage = function(params) { 
       return this.httpDelete('/rooms/'+ params.room_id +'/messages/' + params.message_id);
     };
 
@@ -469,7 +470,7 @@ function cancelIncomingRequestn(params) {
     * @returns {(object|boolean)} APIのレスポンス。APIに失敗した場合は false
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#PUT-rooms-room_id-messages-read
     */
-    ChatWork.prototype.readRoomMessages = function(params) { 
+    ChatWorkClient.prototype.readRoomMessages = function(params) { 
       var optional_keys = ['message_id'];
       var put_data = this._objectFilter(params, optional_keys);
       try {
@@ -486,7 +487,7 @@ function cancelIncomingRequestn(params) {
     * @returns {(object|boolean)} APIのレスポンス。APIに失敗した場合は false
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#PUT-rooms-room_id-messages-unread
     */
-    ChatWork.prototype.unreadRoomMessages = function(params) { 
+    ChatWorkClient.prototype.unreadRoomMessages = function(params) { 
       var param_keys = ['message_id'];
       var put_data = this._objectFilter(params, param_keys);
       try {
@@ -501,7 +502,7 @@ function cancelIncomingRequestn(params) {
     /**
     * マイチャットへのメッセージを送信
     */
-    ChatWork.prototype.sendMessageToMyChat = function(message) {
+    ChatWorkClient.prototype.sendMessageToMyChat = function(message) {
       var mydata = this.httpGet('/me');
       
       return this.sendMessage({
@@ -515,7 +516,7 @@ function cancelIncomingRequestn(params) {
     * @returns {object} APIのレスポンス
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#POST-rooms-room_id-tasks
     */
-    ChatWork.prototype.sendTask = function(params) {
+    ChatWorkClient.prototype.sendTask = function(params) {
       // 互換性のため
       if ('to_id_list' in params) {
         params['to_ids'] = params.to_id_list;
@@ -540,7 +541,7 @@ function cancelIncomingRequestn(params) {
     * @returns {object} APIのレスポンス
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#POST-rooms-room_id-tasks
     */
-    ChatWork.prototype.sendTask = function(params) {
+    ChatWorkClient.prototype.sendTask = function(params) {
       // 互換性のため
       if ('to_id_list' in params) {
         params['to_ids'] = params.to_id_list;
@@ -564,7 +565,7 @@ function cancelIncomingRequestn(params) {
     * 指定したチャットのタスク一覧を取得
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#GET-rooms-room_id-tasks
     */
-    ChatWork.prototype.getRoomTasks = function(room_id, params) {
+    ChatWorkClient.prototype.getRoomTasks = function(room_id, params) {
       return this.httpGet('/rooms/' + room_id + '/tasks', params);
     };
     
@@ -573,7 +574,7 @@ function cancelIncomingRequestn(params) {
     * @returns {object} APIのレスポンス
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#GET-rooms-room_id-files
     */
-    ChatWork.prototype.getRoomFiles = function(params) {
+    ChatWorkClient.prototype.getRoomFiles = function(params) {
       var param_keys = ['account_id'];
       var get_data = this._objectFilter(params, param_keys);
       return this.httpGet('/rooms/' + params.room_id + '/files', get_data);
@@ -583,7 +584,7 @@ function cancelIncomingRequestn(params) {
     * 新しいファイルをアップロード
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#POST-rooms-room_id-files
     */
-    ChatWork.prototype.uploadRoomFile = function(params) {
+    ChatWorkClient.prototype.uploadRoomFile = function(params) {
       throw new Error('NotImplementedError');
     };
     
@@ -592,7 +593,7 @@ function cancelIncomingRequestn(params) {
     * @returns {object} APIのレスポンス
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#GET-rooms-room_id-files-file_id
     */
-    ChatWork.prototype.getRoomFile = function(params) {
+    ChatWorkClient.prototype.getRoomFile = function(params) {
       var get_data = {
         'create_download_url': this._toApiBoolean(this._getValue(params, 'create_download_url', false)),
       };
@@ -604,7 +605,7 @@ function cancelIncomingRequestn(params) {
     * @returns {object} APIのレスポンス
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#GET-rooms-room_id-link
     */
-    ChatWork.prototype.getRoomLink = function(params) {
+    ChatWorkClient.prototype.getRoomLink = function(params) {
       return this.httpGet('/rooms/' + params.room_id + '/link');
     };
 
@@ -613,7 +614,7 @@ function cancelIncomingRequestn(params) {
     * @returns {object} APIのレスポンス
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#PUT-rooms-room_id-link
     */
-    ChatWork.prototype.createRoomLink = function(params) {
+    ChatWorkClient.prototype.createRoomLink = function(params) {
       var param_keys = ['code', 'description'];
       var post_data = this._objectFilter(params, param_keys);
       post_data['need_acceptance'] = this._toApiBoolean(this._getValue(params, 'need_acceptance', true));
@@ -625,7 +626,7 @@ function cancelIncomingRequestn(params) {
     * @returns {object} APIのレスポンス
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#PUT-rooms-room_id-link
     */
-    ChatWork.prototype.updateRoomLink = function(params) {
+    ChatWorkClient.prototype.updateRoomLink = function(params) {
       var param_keys = ['code', 'description'];
       var put_data = this._objectFilter(params, param_keys);
       put_data['need_acceptance'] = this._toApiBoolean(this._getValue(params, 'need_acceptance', true));
@@ -637,7 +638,7 @@ function cancelIncomingRequestn(params) {
     * @returns {object} APIのレスポンス
     * @see http://developer.chatwork.com/ja/endpoint_rooms.html#DELETE-rooms-room_id-link
     */
-    ChatWork.prototype.deleteRoomLink = function(params) {
+    ChatWorkClient.prototype.deleteRoomLink = function(params) {
       return this.httpDelete('/rooms/' + params.room_id + '/link');
     };
 
@@ -645,7 +646,7 @@ function cancelIncomingRequestn(params) {
     * 自分のタスク一覧を取得
     * @see http://developer.chatwork.com/ja/endpoint_my.html#GET-my-tasks
     */
-    ChatWork.prototype.getMyTasks = function(params) {
+    ChatWorkClient.prototype.getMyTasks = function(params) {
       return this.httpGet('/my/tasks', params);
     };
     
@@ -653,7 +654,7 @@ function cancelIncomingRequestn(params) {
     * 自分に対するコンタクト承認依頼一覧を取得する
     * @see http://developer.chatwork.com/ja/endpoint_incoming_requests.html#GET-incoming_requests
     */
-    ChatWork.prototype.getIncomingRequests = function() {
+    ChatWorkClient.prototype.getIncomingRequests = function() {
       return this.httpGet('/incoming_requests');
     };
     
@@ -661,7 +662,7 @@ function cancelIncomingRequestn(params) {
     * 自分に対するコンタクト承認依頼を承認する
     * @see http://developer.chatwork.com/ja/endpoint_incoming_requests.html#PUT-incoming_requests-request_id
     */
-    ChatWork.prototype.acceptIncomingRequest = function(params) {
+    ChatWorkClient.prototype.acceptIncomingRequest = function(params) {
       return this.httpPut('/incoming_requests/' + params.request_id);
     };
     
@@ -669,7 +670,7 @@ function cancelIncomingRequestn(params) {
     * 自分に対するコンタクト承認依頼をキャンセルする
     * @see http://developer.chatwork.com/ja/endpoint_incoming_requests.html#DELETE-incoming_requests-request_id
     */
-    ChatWork.prototype.cancelIncomingRequest = function(params) {
+    ChatWorkClient.prototype.cancelIncomingRequest = function(params) {
       return this.httpDelete('/incoming_requests/' + params.request_id);
     };
     
@@ -678,7 +679,7 @@ function cancelIncomingRequestn(params) {
     * boolean に変換する
     * @returns {boolean}
     */
-    ChatWork.prototype._toBoolean = function(value) {
+    ChatWorkClient.prototype._toBoolean = function(value) {
       return ('1' === value || 1 === value || true === value);
     }
     
@@ -686,7 +687,7 @@ function cancelIncomingRequestn(params) {
     * API パラメータで指定する boolean 値に変換する
     * @returns {string}
     */
-    ChatWork.prototype._toApiBoolean = function(value) {
+    ChatWorkClient.prototype._toApiBoolean = function(value) {
       return (this._toBoolean(value)) ? '1' : '0';
     }
 
@@ -694,7 +695,7 @@ function cancelIncomingRequestn(params) {
     * オブジェクトから指定したキーだけを抽出する
     * オブジェクトにキーがない場合は、無視される
     */
-    ChatWork.prototype._objectFilter = function(obj, keys, converter_func) {
+    ChatWorkClient.prototype._objectFilter = function(obj, keys, converter_func) {
       var filter_obj = {};
       for(var i = 0; i < keys.length; i++) {
         var key = keys[i];
@@ -712,7 +713,7 @@ function cancelIncomingRequestn(params) {
     * unix timeに変換する
     * @returns {(number|null)} unix time。無効な値は null
     */
-    ChatWork.prototype._toUnixTime = function(value) {
+    ChatWorkClient.prototype._toUnixTime = function(value) {
       switch (typeof value) {
         case 'string':
         case 'number':
@@ -730,7 +731,7 @@ function cancelIncomingRequestn(params) {
     * unix timeに変換する
     * @returns {(number|null)} unix time。無効な値は null
     */
-    ChatWork.prototype._objectMerge = function(value) {
+    ChatWorkClient.prototype._objectMerge = function(value) {
       var result = {};
       for(var i = 0; i < arguments.length; ++i) {
         for(var key in arguments[i]) {
@@ -744,7 +745,7 @@ function cancelIncomingRequestn(params) {
     * オブジェクトから値を取り出す
     * キーが存在しない場合は default_value を返却する
     */
-    ChatWork.prototype._getValue = function(params, key, default_value) {
+    ChatWorkClient.prototype._getValue = function(params, key, default_value) {
       params = params || {};
       default_value = default_value === undefined ? null : default_value;
       return key in params ? params[key] : default_value;
@@ -754,12 +755,12 @@ function cancelIncomingRequestn(params) {
     * オブジェクトから値を文字列として取り出す
     * キーが存在しない場合は default_value を返却する
     */
-    ChatWork.prototype._getStringValue = function(params, key, default_value) {
+    ChatWorkClient.prototype._getStringValue = function(params, key, default_value) {
       var value = this._getValue(params, key, default_value);
       return String(value);
     };
     
-    ChatWork.prototype._sendRequest = function(params)
+    ChatWorkClient.prototype._sendRequest = function(params)
     {
       var url = this.base_url + params.path;
       var options = {
@@ -777,7 +778,7 @@ function cancelIncomingRequestn(params) {
       return false;
     };
     
-    ChatWork.prototype.httpPost = function(endpoint, post_data) {
+    ChatWorkClient.prototype.httpPost = function(endpoint, post_data) {
       return this._sendRequest({
         'method': 'post',
         'path': endpoint,
@@ -785,7 +786,7 @@ function cancelIncomingRequestn(params) {
       });
     };
     
-    ChatWork.prototype.httpPut = function(endpoint, put_data) {
+    ChatWorkClient.prototype.httpPut = function(endpoint, put_data) {
       return this._sendRequest({
         'method': 'put',
         'path': endpoint,
@@ -793,7 +794,7 @@ function cancelIncomingRequestn(params) {
       });
     };
     
-    ChatWork.prototype.httpDelete = function(endpoint, put_data) {
+    ChatWorkClient.prototype.httpDelete = function(endpoint, put_data) {
       return this._sendRequest({
         'method': 'delete',
         'path': endpoint,
@@ -801,7 +802,7 @@ function cancelIncomingRequestn(params) {
       });
     };
     
-    ChatWork.prototype.httpGet = function(endpoint, get_data) { 
+    ChatWorkClient.prototype.httpGet = function(endpoint, get_data) { 
       get_data = get_data || {};
       
       var path = endpoint
@@ -823,9 +824,9 @@ function cancelIncomingRequestn(params) {
       });
     };
     
-    return ChatWork;
+    return ChatWorkClient;
   })();
   
-  global.ChatWork = ChatWork;
+  global.ChatWorkClient = ChatWorkClient;
   
 })(this);
