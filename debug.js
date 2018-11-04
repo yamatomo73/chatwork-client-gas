@@ -2,28 +2,28 @@
 // 実行用コンフィグレーション
 // ------------------------------
 
-var API_KEY = PropertiesService.getScriptProperties().getProperty('CW_API_KEY');
+var API_KEY_ = PropertiesService.getScriptProperties().getProperty('CW_API_KEY');
 
-var TEST_ACCOUNT_ID = PropertiesService.getScriptProperties().getProperty('TEST_ACCOUNT_ID');;
-// TEST_ACCOUNT_ID とコンタクトが繋がっているアカウント２つ
-var TEST_CONTACT_ACCOUNT_ID_1 = PropertiesService.getScriptProperties().getProperty('TEST_CONTACT_ACCOUNT_ID_1');;
-var TEST_CONTACT_ACCOUNT_ID_2 = PropertiesService.getScriptProperties().getProperty('TEST_CONTACT_ACCOUNT_ID_2');;
+var TEST_ACCOUNT_ID_ = PropertiesService.getScriptProperties().getProperty('TEST_ACCOUNT_ID');;
+// TEST_ACCOUNT_ID_ とコンタクトが繋がっているアカウント２つ
+var TEST_CONTACT_ACCOUNT_ID_1_ = PropertiesService.getScriptProperties().getProperty('TEST_CONTACT_ACCOUNT_ID_1');;
+var TEST_CONTACT_ACCOUNT_ID_2_ = PropertiesService.getScriptProperties().getProperty('TEST_CONTACT_ACCOUNT_ID_2');;
 
-// TEST_ACCOUNT_ID が管理者のルーム
-var TEST_POST_ROOM_ID =  PropertiesService.getScriptProperties().getProperty('TEST_POST_ROOM_ID');;
+// TEST_ACCOUNT_ID_ が管理者のルーム
+var TEST_POST_ROOM_ID_ =  PropertiesService.getScriptProperties().getProperty('TEST_POST_ROOM_ID');;
 
-function _getChatWorkClient() {
-  return factory({token: API_KEY});
+function getChatWorkClient_() {
+  return factory({token: API_KEY_});
 }
 
 /*
 * 招待リンク削除
 */
-function testDeleteRoomLink() {
-  var client = _getChatWorkClient();
+function testDeleteRoomLink_() {
+  var client = getChatWorkClient_();
   
   var response = client.deleteRoomLink({
-    room_id: TEST_POST_ROOM_ID,
+    room_id: TEST_POST_ROOM_ID_,
   });
   Logger.log(response);
 
@@ -33,11 +33,11 @@ function testDeleteRoomLink() {
 /*
 * 招待リンク更新
 */
-function testUpdateRoomLink() {
-  var client = _getChatWorkClient();
+function testUpdateRoomLink_() {
+  var client = getChatWorkClient_();
   
   var response = client.updateRoomLink({
-    room_id: TEST_POST_ROOM_ID,
+    room_id: TEST_POST_ROOM_ID_,
     code: 'yasuo-kaigi-update',
     description: 'ほげほげUPDATE',
     need_acceptance: true,
@@ -50,11 +50,11 @@ function testUpdateRoomLink() {
 /*
 * 招待リンク作成
 */
-function testCreateRoomLink() {
-  var client = _getChatWorkClient();
+function testCreateRoomLink_() {
+  var client = getChatWorkClient_();
   
   var response = client.createRoomLink({
-    room_id: TEST_POST_ROOM_ID,
+    room_id: TEST_POST_ROOM_ID_,
     code: 'yasuo-kaigi-kazoku',
     description: 'ほげほげ',
     need_acceptance: false,
@@ -67,13 +67,13 @@ function testCreateRoomLink() {
 /*
 * ファイル取得
 */
-function testRoomFile() {
-  var client = _getChatWorkClient();
+function testRoomFile_() {
+  var client = getChatWorkClient_();
   
-  var room_files = testRoomFiles();
+  var room_files = testRoomFiles_();
   
   var response = client.getRoomFile({
-    room_id: TEST_POST_ROOM_ID,
+    room_id: TEST_POST_ROOM_ID_,
     file_id: room_files[0].file_id,
     create_download_url: true,
   });
@@ -85,17 +85,17 @@ function testRoomFile() {
 /*
 * ファイル一覧取得
 */
-function testRoomFiles() {
-  var client = _getChatWorkClient();
+function testRoomFiles_() {
+  var client = getChatWorkClient_();
   
   var response = client.getRoomFiles({
-    room_id: TEST_POST_ROOM_ID,
-    account_id: TEST_ACCOUNT_ID,
+    room_id: TEST_POST_ROOM_ID_,
+    account_id: TEST_ACCOUNT_ID_,
   });
   Logger.log(response);
   
   var response = client.getRoomFiles({
-    room_id: TEST_POST_ROOM_ID,
+    room_id: TEST_POST_ROOM_ID_,
   });
   Logger.log(response);
 
@@ -105,10 +105,10 @@ function testRoomFiles() {
 /*
 * ルーム削除
 */
-function testDeleteRoom() {
-  var client = _getChatWorkClient();
+function testDeleteRoom_() {
+  var client = getChatWorkClient_();
 
-  var response = testCreateRoom();
+  var response = testCreateRoom_();
   
   // ルーム作成
   var response = client.deleteRoom({
@@ -120,14 +120,14 @@ function testDeleteRoom() {
 /*
 * ルーム作成
 */
-function testCreateRoom() {
-  var client = _getChatWorkClient();
+function testCreateRoom_() {
+  var client = getChatWorkClient_();
 
   /*
   // ルーム作成
   var response = client.createRoom({
     name: '✟康夫のホームページへようこそ✟',
-    members_admin_ids: [TEST_ACCOUNT_ID],
+    members_admin_ids: [TEST_ACCOUNT_ID_],
   });
   Logger.log(response);
   */
@@ -135,9 +135,9 @@ function testCreateRoom() {
   // ルーム作成
   var response = client.createRoom({
     name: '✟康夫のおすすめパーツリスト✟',
-    members_admin_ids: [TEST_ACCOUNT_ID],
-    members_member_ids: [TEST_CONTACT_ACCOUNT_ID_1],
-    members_readonly_ids: [TEST_CONTACT_ACCOUNT_ID_2],
+    members_admin_ids: [TEST_ACCOUNT_ID_],
+    members_member_ids: [TEST_CONTACT_ACCOUNT_ID_1_],
+    members_readonly_ids: [TEST_CONTACT_ACCOUNT_ID_2_],
     description: 'ケヒャ、ケヒヒヒヒヒッ！',
     icon_preset: 'heart',
     link: 1,
@@ -152,12 +152,12 @@ function testCreateRoom() {
 /*
 * ルームから退出
 */
-function testLeaveRoom() {
-  var client = _getChatWorkClient();
+function testLeaveRoom_() {
+  var client = getChatWorkClient_();
 
   // ルームから退出
   var response = client.leaveRoom({
-    room_id: TEST_POST_ROOM_ID,
+    room_id: TEST_POST_ROOM_ID_,
   });
   Logger.log(response);
   
@@ -167,9 +167,9 @@ function testLeaveRoom() {
 /*
 * 自分自身の情報
 */
-function testGetMe() {
- // var client = _getChatWorkClient();
-  var client = factory({token:API_KEY});
+function testGetMe_() {
+ // var client = getChatWorkClient_();
+  var client = factory({token:API_KEY_});
 
   // 取得
   var response = client.getMe();
@@ -181,11 +181,11 @@ function testGetMe() {
 /*
 * コンタクト承認を拒否
 */
-function testCancelIncomingRequest() {
-  var client = _getChatWorkClient();
+function testCancelIncomingRequest_() {
+  var client = getChatWorkClient_();
 
   // 自分へのコンタクト承認依頼一覧取得
-  var response = testGetIncomingRequests();
+  var response = testGetIncomingRequests_();
   
   // 承認
   var response = client.cancelIncomingRequest({
@@ -199,11 +199,11 @@ function testCancelIncomingRequest() {
 /*
 * コンタクト承認
 */
-function testAcceptIncomingRequest() {
-  var client = _getChatWorkClient();
+function testAcceptIncomingRequest_() {
+  var client = getChatWorkClient_();
 
   // 自分へのコンタクト承認依頼一覧取得
-  var response = testGetIncomingRequests();
+  var response = testGetIncomingRequests_();
   
   // 承認
   var response = client.acceptIncomingRequest({
@@ -217,8 +217,8 @@ function testAcceptIncomingRequest() {
 /*
 * 自分へのコンタクト承認依頼一覧取得
 */
-function testGetIncomingRequests() {
-  var client = _getChatWorkClient();
+function testGetIncomingRequests_() {
+  var client = getChatWorkClient_();
 
   // 自分へのコンタクト承認依頼一覧取得
   var response = client.getIncomingRequests();
@@ -230,8 +230,8 @@ function testGetIncomingRequests() {
 /**
 * コンタクト一覧を取得する
 */
-function testGetContacts() {
-  var client = _getChatWorkClient();
+function testGetContacts_() {
+  var client = getChatWorkClient_();
 
   // 自分のコンタクト一覧取得
   var response = client.getContacts();
@@ -243,10 +243,10 @@ function testGetContacts() {
 /**
 * 自分のタスク一覧を取得する
 */
-function testGetMyTasks() {
-  var client = _getChatWorkClient();
+function testGetMyTasks_() {
+  var client = getChatWorkClient_();
 
-  //testSendTask();
+  //testSendTask_();
   
   // 完了していない自分のタスク取得
   var response = client.getMyTasks({
@@ -265,18 +265,18 @@ function testGetMyTasks() {
 /**
 * タスク一覧を取得する
 */
-function testGetRoomTasks() {
-  var client = _getChatWorkClient();
+function testGetRoomTasks_() {
+  var client = getChatWorkClient_();
 
-  //testSendTask();
+  //testSendTask_();
   
   // 完了していないタスク取得
-  var response = client.getRoomTasks(TEST_POST_ROOM_ID, {
+  var response = client.getRoomTasks(TEST_POST_ROOM_ID_, {
   });
   Logger.log(response);
   
   // 完了しているタスク取得
-  var response = client.getRoomTasks(TEST_POST_ROOM_ID, {
+  var response = client.getRoomTasks(TEST_POST_ROOM_ID_, {
     status: 'done',
   });
   Logger.log(response);
@@ -287,22 +287,22 @@ function testGetRoomTasks() {
 /**
 * タスクを追加する
 */
-function testSendTask() {
-  var client = _getChatWorkClient();
+function testSendTask_() {
+  var client = getChatWorkClient_();
 
   // 期限なしタスク追加
   var response = client.sendTask({
-    room_id: TEST_POST_ROOM_ID,
+    room_id: TEST_POST_ROOM_ID_,
     body: "ケヒャ、ケヒヒヒヒヒッ！",
-    to_ids: [TEST_ACCOUNT_ID],
+    to_ids: [TEST_ACCOUNT_ID_],
   });
   Logger.log(response);
 
   // 期限ありタスク追加
   var response = client.sendTask({
-    room_id: TEST_POST_ROOM_ID,
+    room_id: TEST_POST_ROOM_ID_,
     body: "ケヒャ、ケヒヒヒヒヒッ！",
-    to_ids: [TEST_ACCOUNT_ID, TEST_CONTACT_ACCOUNT_ID_1],
+    to_ids: [TEST_ACCOUNT_ID_, TEST_CONTACT_ACCOUNT_ID_1_],
     limit: new Date('1998/07/07 01:15:00'),
   });
   Logger.log(response);
@@ -313,14 +313,14 @@ function testSendTask() {
 /**
 * メッセージを削除する
 */
-function testDeleteMessages() {
-  var client = _getChatWorkClient();
+function testDeleteMessages_() {
+  var client = getChatWorkClient_();
 
-  var send_message = testRoomSendMessage();
+  var send_message = testRoomSendMessage_();
   
   // メッセージ更新
   var response = client.updateMessage({
-    room_id: TEST_POST_ROOM_ID,
+    room_id: TEST_POST_ROOM_ID_,
     message_id: send_message.message_id,
     body: "ケヒャ、ケヒヒヒヒヒッ！ 犯人はヤス！！",
   });
@@ -328,7 +328,7 @@ function testDeleteMessages() {
 
   // メッセージ削除
   var response = client.deleteMessage({
-    room_id: TEST_POST_ROOM_ID,
+    room_id: TEST_POST_ROOM_ID_,
     message_id: send_message.message_id,
   });
   Logger.log(response);
@@ -337,14 +337,14 @@ function testDeleteMessages() {
 /**
 * メッセージを更新する
 */
-function testUpdateMessages() {
-  var client = _getChatWorkClient();
+function testUpdateMessages_() {
+  var client = getChatWorkClient_();
 
-  var send_message = testRoomSendMessage();
+  var send_message = testRoomSendMessage_();
   
   // メッセージ更新
   var response = client.updateMessage({
-    room_id: TEST_POST_ROOM_ID,
+    room_id: TEST_POST_ROOM_ID_,
     message_id: send_message.message_id,
     body: "ケヒャ、ケヒヒヒヒヒッ♡　美味しい🍣と🍺",
   });
@@ -354,27 +354,27 @@ function testUpdateMessages() {
 /**
 * メッセージを既読にする
 */
-function testUnreadRoomMessages() {
-  var client = _getChatWorkClient();
+function testUnreadRoomMessages_() {
+  var client = getChatWorkClient_();
 
-  var room_messages = testGetRoomMessages();
+  var room_messages = testGetRoomMessages_();
   Logger.log(room_messages[0]);
 
   // 全件既読
   client.readRoomMessages({
-    room_id: TEST_POST_ROOM_ID,
+    room_id: TEST_POST_ROOM_ID_,
   });
   
   // 直近の１個目を未読にする
   var response = client.unreadRoomMessages({
-    room_id: TEST_POST_ROOM_ID,
+    room_id: TEST_POST_ROOM_ID_,
     'message_id': room_messages[room_messages.length - 1].message_id,
   });
   Logger.log(response);
 
   // すでに未読になっている場合はエラー 
   var response = client.unreadRoomMessages({
-    room_id: TEST_POST_ROOM_ID,
+    room_id: TEST_POST_ROOM_ID_,
     'message_id': room_messages[room_messages.length - 1].message_id,
   });
   Logger.log(response); // false
@@ -383,32 +383,32 @@ function testUnreadRoomMessages() {
 /**
 * メッセージを既読にする
 */
-function testReadRoomMessages() {
-  var client = _getChatWorkClient();
+function testReadRoomMessages_() {
+  var client = getChatWorkClient_();
 
   // テスト発言１回目
-  var response1 = testRoomSendMessage();
+  var response1 = testRoomSendMessage_();
   // テスト発言２回目
-  testRoomSendMessage();
+  testRoomSendMessage_();
   // テスト発言３回目
-  testRoomSendMessage();
+  testRoomSendMessage_();
   
   // １個目を既読にする
   var response = client.readRoomMessages({
-    room_id: TEST_POST_ROOM_ID,
+    room_id: TEST_POST_ROOM_ID_,
     'message_id': response1.message_id,
   });
   Logger.log(response);
   
   // 全件既読
   var response = client.readRoomMessages({
-    room_id: TEST_POST_ROOM_ID,
+    room_id: TEST_POST_ROOM_ID_,
   });
   Logger.log(response);
 
   // すでに既読になっている場合はエラー
   var response = client.readRoomMessages({
-    room_id: TEST_POST_ROOM_ID,
+    room_id: TEST_POST_ROOM_ID_,
     'message_id': response1.message_id,
   });
   Logger.log(response); // false
@@ -417,27 +417,27 @@ function testReadRoomMessages() {
 /**
 * ルームの未取得メッセージ情報取得
 */
-function testGetRoomMessages() {
-  var client = _getChatWorkClient();
+function testGetRoomMessages_() {
+  var client = getChatWorkClient_();
 
   // テスト発言
-  testRoomSendMessage();
+  testRoomSendMessage_();
   
   // 情報取得
   var response = client.getRoomMessages({
-    room_id: TEST_POST_ROOM_ID,
+    room_id: TEST_POST_ROOM_ID_,
   });
   //Logger.log(response);
   
   // 情報取得
   var response = client.getRoomMessages({
-    room_id: TEST_POST_ROOM_ID,
+    room_id: TEST_POST_ROOM_ID_,
   });
   //Logger.log(response);  // false
   
   // 強制情報取得
   var response = client.getRoomMessages({
-    room_id: TEST_POST_ROOM_ID,
+    room_id: TEST_POST_ROOM_ID_,
     'force': 1,
   });
   //Logger.log(response);
@@ -448,12 +448,12 @@ function testGetRoomMessages() {
 /**
 * ルーム情報更新
 */
-function testUpdateRoom() {
-  var client = _getChatWorkClient();
+function testUpdateRoom_() {
+  var client = getChatWorkClient_();
   
   // ルーム情報参照
   var response = client.updateRoom({
-    room_id: TEST_POST_ROOM_ID,
+    room_id: TEST_POST_ROOM_ID_,
     description: Math.random(),
     icon_preset: 'security',
     name: '康夫の家族会議室' + Utilities.formatDate( new Date(), 'Asia/Tokyo', 'yyyy-MM-dd HH:mm:ss'),
@@ -467,27 +467,27 @@ function testUpdateRoom() {
 /**
 * ルームメンバー更新
 */
-function testUpdateRoomMembers() {
-  var client = _getChatWorkClient();
+function testUpdateRoomMembers_() {
+  var client = getChatWorkClient_();
   
   // 管理者だけにする
   var response = client.updateRoomMembers({
-    room_id: TEST_POST_ROOM_ID,
-    members_admin_ids: [TEST_ACCOUNT_ID],
+    room_id: TEST_POST_ROOM_ID_,
+    members_admin_ids: [TEST_ACCOUNT_ID_],
   });
   
   // メンバー追加する
   var response = client.updateRoomMembers({
-    room_id: TEST_POST_ROOM_ID,
-    members_admin_ids: [TEST_ACCOUNT_ID, TEST_CONTACT_ACCOUNT_ID_2, TEST_CONTACT_ACCOUNT_ID_1],
+    room_id: TEST_POST_ROOM_ID_,
+    members_admin_ids: [TEST_ACCOUNT_ID_, TEST_CONTACT_ACCOUNT_ID_2_, TEST_CONTACT_ACCOUNT_ID_1_],
   });
   
   // 権限変更
   var response = client.updateRoomMembers({
-    room_id: TEST_POST_ROOM_ID,
-    members_admin_ids: [TEST_ACCOUNT_ID],
-    members_member_ids: [TEST_CONTACT_ACCOUNT_ID_2],
-    members_readonly_ids: [TEST_CONTACT_ACCOUNT_ID_1],
+    room_id: TEST_POST_ROOM_ID_,
+    members_admin_ids: [TEST_ACCOUNT_ID_],
+    members_member_ids: [TEST_CONTACT_ACCOUNT_ID_2_],
+    members_readonly_ids: [TEST_CONTACT_ACCOUNT_ID_1_],
   });  
   Logger.log(response);
   
@@ -497,12 +497,12 @@ function testUpdateRoomMembers() {
 /*
 * ルーム更新系のシナリオテスト
 */
-function testRoomCRUDScenario() {
-  var client = _getChatWorkClient();
+function testRoomCRUDScenario_() {
+  var client = getChatWorkClient_();
   
   // ルーム情報参照
   var response = client.getRoom({
-    room_id: TEST_POST_ROOM_ID
+    room_id: TEST_POST_ROOM_ID_
   });
   
   Logger.log(response);
@@ -512,12 +512,12 @@ function testRoomCRUDScenario() {
 /*
 *  メッセージ系のシナリオテスト
 */
-function testRoomSendMessage() {
-  var client = _getChatWorkClient();
+function testRoomSendMessage_() {
+  var client = getChatWorkClient_();
   
   // メッセージ送信
   var response = client.sendMessage({
-    room_id: TEST_POST_ROOM_ID,
+    room_id: TEST_POST_ROOM_ID_,
     body: "ケヒャ、ケヒヒヒヒヒッ！",
     self_unread: 1
   });
